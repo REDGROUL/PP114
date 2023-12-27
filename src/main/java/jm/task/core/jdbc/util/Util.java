@@ -24,7 +24,6 @@ public class Util {
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
             try {
                 connection = DriverManager.getConnection(url, username, password);
-                System.out.println("Connection to Store DB succesfull!");
             } catch (Exception e) {
 
             }
@@ -32,7 +31,7 @@ public class Util {
         catch(Exception ex){
             System.out.println("Connection failed...");
 
-            System.out.println(ex);
+            System.out.println(ex.getMessage());
         }
 
 
