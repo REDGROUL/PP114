@@ -10,7 +10,10 @@ import java.sql.Statement;
 public class Main {
     public static void main(String[] args) throws SQLException {
         UserDaoJDBCImpl userDaoJDBC = new UserDaoJDBCImpl();
-       // userDaoJDBC.createUsersTable();
-        userDaoJDBC.dropUsersTable();
+        //userDaoJDBC.createUsersTable();
+       //userDaoJDBC.dropUsersTable();
+       //userDaoJDBC.removeUserById(1);
+        userDaoJDBC.cleanUsersTable();
+        //userDaoJDBC.saveUser("fedor", "borisov", (byte) 22);
     }
 }

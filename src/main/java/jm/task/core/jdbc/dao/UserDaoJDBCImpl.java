@@ -15,18 +15,16 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void createUsersTable() {
         Statement statement = null;
-        try {
-            statement = new Util().getConnection().createStatement();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
         try {
+            statement = new Util().getConnection().createStatement();
             statement.executeUpdate("CREATE TABLE users (id INT PRIMARY KEY AUTO_INCREMENT, name varchar(64), lastName varchar(64), age tinyint)");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("Database has been created!");
+        } catch (Exception e) {
+            System.out.printf(e.getMessage());
         }
-        System.out.println("Database has been created!");
+
+
     }
 
     public void dropUsersTable() {
@@ -34,7 +32,7 @@ public class UserDaoJDBCImpl implements UserDao {
             Statement statement = new Util().getConnection().createStatement();
             statement.executeUpdate("drop table users");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.printf(e.getMessage());
         }
 
 
@@ -52,12 +50,20 @@ public class UserDaoJDBCImpl implements UserDao {
             statement.executeUpdate();
 
         } catch (Exception e) {
-
+            System.out.printf(e.getMessage());
         }
     }
 
     public void removeUserById(long id) {
 
+        try {
+            String sql = "DELETE FROM users WHERE `id` = (?)";
+            PreparedStatement statement = new Util().getConnection().prepareStatement(sql);
+            statement.setLong(1 , id);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            System.out.printf(e.getMessage());
+        }
     }
 
     public List<User> getAllUsers() {
@@ -65,6 +71,12 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void cleanUsersTable() {
+        try {
+            Statement statement = new Util().getConnection().createStatement();
+            statement.executeUpdate("TRUNCATE users");
+        } catch (Exception e) {
+            System.out.printf(e.getMessage());
+        }
 
     }
 }
