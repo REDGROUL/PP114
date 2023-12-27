@@ -10,37 +10,24 @@ public class Util {
         String host = "localhost";
         String dbName = "kata";
         String username = "root";
-        String password = "Ripazha32.";
-        this.getConnection(username, password);
+        String password = "UPass:)";
+        this.getConnection(host, dbName, username, password);
     }
 
+    public void getConnection(String host, String dbName, String username, String password) {
 
-
-    public void getConnection(String username, String password) {
-
-
-        String url = "jdbc:mysql://localhost/kata";
+        String url = new StringBuilder().append("jdbc:mysql://").append(host).append("/").append(dbName).toString();
         try{
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
-            try {
-                connection = DriverManager.getConnection(url, username, password);
-            } catch (Exception e) {
-
-            }
+            connection = DriverManager.getConnection(url, username, password);
         }
         catch(Exception ex){
-            System.out.println("Connection failed...");
-
             System.out.println(ex.getMessage());
         }
-
-
     }
 
     public Connection getConnection() {
         return connection;
     }
-
-
 
 }
