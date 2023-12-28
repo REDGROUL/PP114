@@ -8,23 +8,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
+
+    private static final Connection connect = new Util().getConnection();
     public UserDaoJDBCImpl() {
 
     }
 
     public void createUsersTable() {
         try {
-            Statement statement = new Util().getConnection().createStatement();
+            Statement statement = connect.createStatement();
             statement.executeUpdate("CREATE TABLE users (id INT PRIMARY KEY AUTO_INCREMENT, name varchar(64), lastName varchar(64), age tinyint)");
             System.out.println("Database has been created!");
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.printf(e.getMessage());
         }
     }
 
     public void dropUsersTable() {
         try {
-            Statement statement = new Util().getConnection().createStatement();
+            Statement statement = connect.createStatement();
             statement.executeUpdate("drop table users");
         } catch (SQLException e) {
             System.out.printf(e.getMessage());
@@ -34,13 +36,13 @@ public class UserDaoJDBCImpl implements UserDao {
     public void saveUser(String name, String lastName, byte age) {
         try {
             String sql = "INSERT INTO users (`name`, `lastname`, `age`) VALUES ((?), (?), (?))";
-            PreparedStatement statement = new Util().getConnection().prepareStatement(sql);
+            PreparedStatement statement = connect.prepareStatement(sql);
             statement.setString(1, name);
             statement.setString(2, lastName);
             statement.setByte(3,age);
             statement.executeUpdate();
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.printf(e.getMessage());
         }
     }
@@ -49,10 +51,10 @@ public class UserDaoJDBCImpl implements UserDao {
 
         try {
             String sql = "DELETE FROM users WHERE `id` = (?)";
-            PreparedStatement statement = new Util().getConnection().prepareStatement(sql);
+            PreparedStatement statement = connect.prepareStatement(sql);
             statement.setLong(1 , id);
             statement.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.printf(e.getMessage());
         }
     }
@@ -61,7 +63,7 @@ public class UserDaoJDBCImpl implements UserDao {
         List<User> users = new ArrayList<>();
 
         try {
-            Statement statement = new Util().getConnection().createStatement();
+            Statement statement = connect.createStatement();
             ResultSet rs = statement.executeQuery("SELECT * FROM users");
 
             while (rs.next()) {
@@ -74,17 +76,17 @@ public class UserDaoJDBCImpl implements UserDao {
             }
 
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        } catch (SQLException e) {
+            System.out.printf(e.getMessage());
         }
         return users;
     }
 
     public void cleanUsersTable() {
         try {
-            Statement statement = new Util().getConnection().createStatement();
+            Statement statement = connect.createStatement();
             statement.executeUpdate("TRUNCATE users");
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.printf(e.getMessage());
         }
 
