@@ -1,15 +1,18 @@
 package jm.task.core.jdbc;
+import jm.task.core.jdbc.dao.UserDaoHibernateImpl;
 import jm.task.core.jdbc.dao.UserDaoJDBCImpl;
 import jm.task.core.jdbc.model.User;
+import jm.task.core.jdbc.service.UserServiceImpl;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
 
-        UserDaoJDBCImpl userDaoJDBC = new UserDaoJDBCImpl();
+        UserServiceImpl userService = new UserServiceImpl();
 
-        userDaoJDBC.createUsersTable();
+        userService.createUsersTable();
 
         List<User> users = new ArrayList<>();
 
@@ -19,16 +22,17 @@ public class Main {
         users.add(new User("user4", "userln4", (byte) 22));
 
         users.forEach(usr->{
-            userDaoJDBC.saveUser(usr.getName(), usr.getLastName(), usr.getAge());
+            userService.saveUser(usr.getName(), usr.getLastName(), usr.getAge());
             System.out.println("User с именем – " + usr.getName() + " добавлен в базу данных ");
         });
 
-        List<User> userList= userDaoJDBC.getAllUsers();
+        List<User> userList = userService.getAllUsers();
 
         System.out.println(userList);
 
-        userDaoJDBC.cleanUsersTable();
-        userDaoJDBC.dropUsersTable();
+        userService.cleanUsersTable();
+        userService.dropUsersTable();
+
 
     }
 }
