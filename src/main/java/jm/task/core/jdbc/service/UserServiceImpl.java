@@ -12,6 +12,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserDao userDaoJDBC = new UserDaoJDBCImpl();
     private final UserDao userDaoHibernate = new UserDaoHibernateImpl();
+
     public void createUsersTable() {
         try {
             userDaoHibernate.createUsersTable();
